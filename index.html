@@ -97,9 +97,10 @@
   <div class="logo">A</div>
   <div>
     <h1>ASAP Pressure Clean — Lead & Campaign CRM</h1>
-    <small>Email campaign progress and pipeline tracker · <span id="today"></span></small>
+    <small>Email campaign progress and pipeline tracker · <span id="today"></span> · <span class="muted">Gmail synced: <b id="lastSync">Apr 24, 2026</b></span></small>
   </div>
   <div class="sp"></div>
+  <button class="primary" onclick="openRefreshModal()" title="Pull latest replies, bounces, opens from Gmail">↻ Refresh from Gmail</button>
   <button class="ghost" onclick="exportJSON()">Export</button>
   <button class="ghost" onclick="document.getElementById('importer').click()">Import</button>
   <input id="importer" type="file" accept="application/json" hidden onchange="importJSON(event)" />
@@ -107,6 +108,20 @@
   <button class="primary" onclick="openLeadModal()">+ Lead</button>
   <button class="primary" onclick="openCampaignModal()">+ Campaign</button>
 </header>
+
+<div class="overlay" id="refreshOverlay"><div class="modal">
+  <h3>Refresh from Gmail</h3>
+  <div class="content">
+    <p style="margin-top:0">This site shows a snapshot from <b id="lastSyncDetail">Apr 24, 2026</b>. To pull fresh replies, bounces, and auto-replies from <b>asappressurecleaning@gmail.com</b>, run the refresh workflow on GitHub — it queries Gmail, regenerates the lead list, and redeploys automatically (~1 minute).</p>
+    <p style="color:var(--ink-dim);font-size:12px">On the page that opens, click <b>"Run workflow" → "Run workflow"</b>. Reload this site after it finishes.</p>
+    <p style="color:var(--warn,#f59e0b);font-size:12px;background:#2b1e06;border:1px solid #5a4010;padding:8px 10px;border-radius:6px">If this is your first time, the workflow may need credentials configured. Ask Claude to set up the Composio-powered refresh job.</p>
+  </div>
+  <div class="foot">
+    <span style="flex:1"></span>
+    <button class="ghost" onclick="closeModal('refreshOverlay')">Cancel</button>
+    <a class="btn primary" href="https://github.com/joshuaabbottr/asap-crm/actions/workflows/refresh.yml" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block;padding:8px 12px">Open GitHub Actions →</a>
+  </div>
+</div></div>
 
 <main>
 
@@ -657,6 +672,7 @@ function renderAll(){ renderKPIs(); renderCampaigns(); renderFunnel(); renderLea
 /* ====== Modals ====== */
 function openModal(id){ $("#"+id).classList.add("on") }
 function closeModal(id){ $("#"+id).classList.remove("on") }
+function openRefreshModal(){ openModal("refreshOverlay"); }
 
 function openLeadModal(id){
   editingLeadId = id || null;
