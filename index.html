@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ASAP Pressure Clean — Lead & Campaign CRM</title>
+<style>
+  :root{
+    --bg:#0b1220; --panel:#121b2e; --panel2:#18253e; --line:#22314f;
+    --ink:#e7eefb; --ink-dim:#9db0cf; --accent:#38bdf8; --accent2:#0ea5e9;
+    --good:#22c55e; --warn:#f59e0b; --bad:#ef4444; --muted:#64748b;
+    --chip:#1e2a44;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:linear-gradient(180deg,#091022 0%,#0b1220 100%);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:14px}
+  a{color:var(--accent)}
+  header{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;background:rgba(8,14,30,.85);backdrop-filter:blur(6px);position:sticky;top:0;z-index:5}
+  header .logo{width:36px;height:36px;border-radius:9px;background:conic-gradient(from 220deg,#0ea5e9,#38bdf8,#22d3ee,#0ea5e9);box-shadow:0 0 24px rgba(56,189,248,.35);display:flex;align-items:center;justify-content:center;font-weight:800;color:#081326}
+  header h1{font-size:16px;margin:0;letter-spacing:.2px}
+  header small{color:var(--ink-dim)}
+  header .sp{flex:1}
+  button,.btn{background:var(--panel2);color:var(--ink);border:1px solid var(--line);padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px}
+  button:hover,.btn:hover{border-color:var(--accent);color:#fff}
+  button.primary{background:linear-gradient(180deg,#0ea5e9,#0369a1);border-color:#0ea5e9;color:#fff}
+  button.ghost{background:transparent}
+  button.danger{background:#3a1218;border-color:#5a1b25;color:#ffd4da}
+  main{padding:22px;display:grid;gap:22px;max-width:1400px;margin:0 auto}
+  .kpis{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:12px}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
+  .kpi .label{font-size:11px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:.08em}
+  .kpi .value{font-size:22px;font-weight:700;margin-top:4px}
+  .kpi .sub{font-size:11px;color:var(--ink-dim);margin-top:2px}
+  .grid{display:grid;gap:18px}
+  .grid.two{grid-template-columns:1.15fr .85fr}
+  @media (max-width:1100px){.grid.two{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(4,1fr)}}
+  @media (max-width:640px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .panel h2{margin:0;padding:14px 16px;border-bottom:1px solid var(--line);font-size:14px;display:flex;align-items:center;gap:10px}
+  .panel h2 .hint{color:var(--ink-dim);font-weight:400;font-size:12px}
+  .panel .body{padding:14px 16px}
+  table{width:100%;border-collapse:collapse}
+  th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;font-size:13px;vertical-align:middle}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-dim);background:#0f172a;position:sticky;top:0}
+  tbody tr:hover{background:#0f1a30}
+  .chip{display:inline-block;padding:3px 8px;border-radius:999px;font-size:11px;background:var(--chip);border:1px solid var(--line);color:var(--ink)}
+  .chip.good{background:#0b2a1a;border-color:#164e36;color:#86efac}
+  .chip.warn{background:#2b1e06;border-color:#5a4010;color:#fcd34d}
+  .chip.bad{background:#2a0f12;border-color:#5a1b25;color:#fca5a5}
+  .chip.info{background:#0c2236;border-color:#1c4166;color:#7dd3fc}
+  .chip.ghost{opacity:.7}
+  .pill{display:inline-block;padding:2px 7px;border-radius:6px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:#0c2236;color:#7dd3fc;border:1px solid #1c4166}
+  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .bar{height:6px;background:#0b172b;border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+  .bar>span{display:block;height:100%;background:linear-gradient(90deg,#38bdf8,#22c55e)}
+  .funnel{display:grid;gap:6px}
+  .funnel .rowf{display:grid;grid-template-columns:160px 1fr 70px;align-items:center;gap:10px;font-size:13px}
+  .funnel .rowf .label{color:var(--ink-dim)}
+  .funnel .rowf .track{height:22px;background:#0b172b;border:1px solid var(--line);border-radius:6px;overflow:hidden;position:relative}
+  .funnel .rowf .fill{height:100%;background:linear-gradient(90deg,#0ea5e9,#22d3ee);box-shadow:inset 0 0 12px rgba(0,0,0,.25)}
+  .funnel .rowf .count{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+  input,select,textarea{background:#0b172b;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:8px 10px;font-size:13px;width:100%}
+  textarea{min-height:64px;resize:vertical}
+  label{font-size:11px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:4px}
+  .form{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .form .full{grid-column:1/-1}
+  .overlay{position:fixed;inset:0;background:rgba(4,10,24,.65);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+  .overlay.on{display:flex}
+  .modal{background:var(--panel);border:1px solid var(--line);border-radius:14px;max-width:720px;width:100%;max-height:90vh;overflow:auto}
+  .modal h3{margin:0;padding:14px 16px;border-bottom:1px solid var(--line);font-size:14px}
+  .modal .content{padding:16px}
+  .modal .foot{padding:12px 16px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px}
+  .toolbar{display:flex;gap:8px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);background:#0f172a}
+  .toolbar input[type=search]{max-width:240px}
+  .muted{color:var(--ink-dim)}
+  .tabs{display:flex;gap:4px;padding:8px 10px 0 10px;border-bottom:1px solid var(--line);background:#0f172a}
+  .tab{padding:8px 12px;font-size:12px;border:1px solid transparent;border-bottom:none;border-radius:8px 8px 0 0;cursor:pointer;color:var(--ink-dim)}
+  .tab.active{background:var(--panel);border-color:var(--line);color:var(--ink)}
+  .metric-inline{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink-dim)}
+  .metric-inline b{color:var(--ink)}
+  .num{font-variant-numeric:tabular-nums}
+  .stage-dot{display:inline-block;width:8px;height:8px;border-radius:999px;margin-right:6px;background:var(--muted)}
+  .stage-new{background:#94a3b8}
+  .stage-sent{background:#38bdf8}
+  .stage-opened{background:#22d3ee}
+  .stage-replied{background:#a78bfa}
+  .stage-meeting{background:#f59e0b}
+  .stage-quoted{background:#eab308}
+  .stage-won{background:#22c55e}
+  .stage-lost{background:#ef4444}
+  .stage-bounced{background:#f97316}
+  footer{padding:14px 22px;color:var(--ink-dim);font-size:12px;text-align:center;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">A</div>
+  <div>
+    <h1>ASAP Pressure Clean — Lead & Campaign CRM</h1>
+    <small>Email campaign progress and pipeline tracker · <span id="today"></span></small>
+  </div>
+  <div class="sp"></div>
+  <button class="ghost" onclick="exportJSON()">Export</button>
+  <button class="ghost" onclick="document.getElementById('importer').click()">Import</button>
+  <input id="importer" type="file" accept="application/json" hidden onchange="importJSON(event)" />
+  <button class="ghost" onclick="resetData()">Reset</button>
+  <button class="primary" onclick="openLeadModal()">+ Lead</button>
+  <button class="primary" onclick="openCampaignModal()">+ Campaign</button>
+</header>
+
+<main>
+
+  <!-- KPIs -->
+  <section class="kpis" id="kpis"></section>
+
+  <!-- Campaigns + Funnel -->
+  <section class="grid two">
+    <div class="panel">
+      <h2>Campaigns <span class="hint">click a row to filter leads</span></h2>
+      <div class="toolbar">
+        <input id="campSearch" type="search" placeholder="Search campaigns…" oninput="renderCampaigns()" />
+        <span class="sp" style="flex:1"></span>
+        <button class="ghost" onclick="clearCampaignFilter()">Clear filter</button>
+      </div>
+      <div style="overflow:auto;max-height:360px">
+      <table id="campTable">
+        <thead><tr>
+          <th>Campaign</th><th>Segment</th><th>Status</th><th class="num">Leads</th>
+          <th class="num">Sent</th><th class="num">Open %</th><th class="num">Reply %</th>
+          <th class="num">Meetings</th><th class="num">Quoted $</th><th class="num">Won $</th><th></th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Pipeline funnel <span class="hint" id="funnelCtx">all campaigns</span></h2>
+      <div class="body">
+        <div class="funnel" id="funnel"></div>
+        <hr style="border:none;border-top:1px solid var(--line);margin:16px 0"/>
+        <div class="metric-inline" id="funnelMetrics"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leads -->
+  <section class="panel">
+    <h2>Leads <span class="hint" id="leadCtx">showing all</span></h2>
+    <div class="toolbar">
+      <input id="leadSearch" type="search" placeholder="Search company, contact, email…" oninput="renderLeads()" />
+      <select id="filterStage" onchange="renderLeads()">
+        <option value="">All stages</option>
+      </select>
+      <select id="filterSegment" onchange="renderLeads()">
+        <option value="">All segments</option>
+      </select>
+      <span style="flex:1"></span>
+      <span class="muted" id="leadCount"></span>
+    </div>
+    <div style="overflow:auto;max-height:520px">
+    <table id="leadTable">
+      <thead><tr>
+        <th>Company</th><th>Contact</th><th>Segment</th><th>Campaign</th>
+        <th>Stage</th><th class="num">Value</th><th>Last touch</th><th>Next action</th><th></th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+    </div>
+  </section>
+
+</main>
+
+<footer>Data lives in this browser (localStorage). Use Export/Import to back up or move between devices.</footer>
+
+<!-- Lead modal -->
+<div class="overlay" id="leadOverlay"><div class="modal">
+  <h3 id="leadModalTitle">Add lead</h3>
+  <div class="content">
+    <div class="form">
+      <div><label>Company</label><input id="f_company" /></div>
+      <div><label>Contact name</label><input id="f_contact" /></div>
+      <div><label>Title</label><input id="f_title" placeholder="Property Mgr, Owner…" /></div>
+      <div><label>Email</label><input id="f_email" type="email" /></div>
+      <div><label>Phone</label><input id="f_phone" /></div>
+      <div><label>Segment</label><select id="f_segment"></select></div>
+      <div><label>Campaign</label><select id="f_campaign"></select></div>
+      <div><label>Stage</label><select id="f_stage"></select></div>
+      <div><label>Est. value ($)</label><input id="f_value" type="number" min="0" step="100" /></div>
+      <div><label>Last touch (date)</label><input id="f_last" type="date" /></div>
+      <div><label>Next action (date)</label><input id="f_next_date" type="date" /></div>
+      <div><label>Next action</label><input id="f_next" placeholder="Send quote, follow-up call…" /></div>
+      <div class="full"><label>Notes</label><textarea id="f_notes" placeholder="Building count, square footage, pain points, referral source…"></textarea></div>
+    </div>
+  </div>
+  <div class="foot">
+    <button class="danger" id="leadDelete" onclick="deleteLead()" style="display:none">Delete</button>
+    <span style="flex:1"></span>
+    <button class="ghost" onclick="closeModal('leadOverlay')">Cancel</button>
+    <button class="primary" onclick="saveLead()">Save</button>
+  </div>
+</div></div>
+
+<!-- Campaign modal -->
+<div class="overlay" id="campOverlay"><div class="modal">
+  <h3 id="campModalTitle">Add campaign</h3>
+  <div class="content">
+    <div class="form">
+      <div class="full"><label>Name</label><input id="c_name" placeholder="e.g. HOA Spring Roof & Siding Wash" /></div>
+      <div><label>Segment</label><select id="c_segment"></select></div>
+      <div><label>Status</label>
+        <select id="c_status">
+          <option>Draft</option><option>Active</option>
+          <option>Paused</option><option>Complete</option>
+        </select>
+      </div>
+      <div><label>Launch date</label><input id="c_launch" type="date" /></div>
+      <div><label>Target leads</label><input id="c_target" type="number" min="0" /></div>
+      <div><label>Subject line</label><input id="c_subject" /></div>
+      <div class="full"><label>Notes / offer</label><textarea id="c_notes" placeholder="Offer, CTA, pricing hook, geography…"></textarea></div>
+    </div>
+  </div>
+  <div class="foot">
+    <button class="danger" id="campDelete" onclick="deleteCampaign()" style="display:none">Delete</button>
+    <span style="flex:1"></span>
+    <button class="ghost" onclick="closeModal('campOverlay')">Cancel</button>
+    <button class="primary" onclick="saveCampaign()">Save</button>
+  </div>
+</div></div>
+
+<script>
+/* ====== Data model ====== */
+const STAGES = ["New","Sent","Opened","Replied","Meeting","Quoted","Won","Bounced","Lost"];
+const STAGE_CLASS = {New:"stage-new",Sent:"stage-sent",Opened:"stage-opened",Replied:"stage-replied",Meeting:"stage-meeting",Quoted:"stage-quoted",Won:"stage-won",Bounced:"stage-bounced",Lost:"stage-lost"};
+const SEGMENTS = [
+  "Apartment Buildings / HOA-governed properties",
+  "Assisted Living Facilities",
+  "Auto Dealers",
+  "Banquet / Event Venues",
+  "Body Shops",
+  "Car Washes",
+  "Churches",
+  "Cinemas",
+  "Dental Practices",
+  "Entertainment",
+  "Fitness Centers / Gyms",
+  "Funeral Homes",
+  "Golf Courses",
+  "Laundromats",
+  "Marinas",
+  "Medical Offices",
+  "Private Schools & Daycares",
+  "Restaurants",
+  "RV Parks",
+  "Self-Storage Facilities",
+  "Veterinary Clinics",
+  "Wineries & Breweries",
+  "Mixed",
+  "Other"
+];
+
+const LS_KEY = "asap_crm_v3";
+
+// All 182 leads from asappressurecleaning@gmail.com sent folder (verified via Composio/Gmail on 2026-04-23).
+// Tuple: [gmailThreadId, company, email, segment, batch(Apr21|Apr22), stage, notes]
+// Bounces, auto-replies and real replies reconciled from inbox.
+const _RAW_LEADS = [
+  ["19db025e016b89d6","MorseLife","info@morselife.org","Assisted Living Facilities","Apr21","Sent","Batch:Apr21"],
+  ["19db0262ea3138e2","Palm Beach Memory Care","info@pbmemorycare.com","Assisted Living Facilities","Apr21","Sent","Batch:Apr21"],
+  ["19db028126540325","Serenity Living Home Care","serenitylivingalf@yahoo.com","Assisted Living Facilities","Apr21","Sent","Batch:Apr21"],
+  ["19db025fb86a2bc2","Gonz Auto Collision Center","info@gonzcollision.com","Body Shops","Apr21","Sent","Batch:Apr21"],
+  ["19db027af40120b4","HA Collision Repair","hacollisionrepair@gmail.com","Body Shops","Apr21","Sent","Batch:Apr21"],
+  ["19db027c59a5b7a6","Palm Beach Coachworks","PBCoachWorks@gmail.com","Body Shops","Apr21","Sent","Batch:Apr21"],
+  ["19db027afc3df19e","Sunshine Collision Center","scc33431@hotmail.com","Body Shops","Apr21","Sent","Batch:Apr21"],
+  ["19db025ca8e39c13","Esteban Brothers Mobile Car Wash","estebanbrotherscarwash@gmail.com","Car Washes","Apr21","Sent","Batch:Apr21"],
+  ["19db027a4dc3d506","Wash & Wax Auto Spa","info@autospawpb.com","Car Washes","Apr21","Sent","Batch:Apr21"],
+  ["19db022c4bc96ba5","Ascension Catholic Church","ascension@accboca.net","Churches","Apr21","Bounced","BOUNCED — domain accboca.net not found"],
+  ["19db0241e953da5d","Basilica of Saint Edward","stedwardch@aol.com","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db027dcd84d3c8","Boynton Beach Community Church","info@bbcconline.org","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db022cfce9d285","Cathedral of Saint Ignatius Loyola","office@cathedralpb.com","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db027f55388352","Christ Fellowship Church","hello@christfellowship.church","Churches","Apr21","Replied","REPLY: Christ Fellowship replied 4/21 — we replied back same day"],
+  ["19db022bfb2beaea","Emmanuel Catholic Church","secretary@emmanuelcatholic.church","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db022ca355cbb4","First Christian Church","office@firstchristianwpb.org","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db024294622587","Holy Name of Jesus","info@myhnj.org","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db022d517a9710","Holy Spirit Catholic Church","office@holyspiritlantana.com","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db022c8f5733ad","Holy Trinity Episcopal Church","kelly@holytrinitywpb.org","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db0241f7ab4cb5","Mary Immaculate Catholic Church","RVanoordt@miwpb.com","Churches","Apr21","Bounced","BOUNCED — domain miwpb.com not found"],
+  ["19db0241e778b4b3","Our Lady Queen of Apostles","info@olqa.cc","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db022be2cc6167","Our Lady Queen of Peace","queenofpeacedelray@gmail.com","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db022c47e9d245","Our Lady of Lourdes","secretary@lourdesboca.org","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db022bffce14fb","Our Lady of Perpetual Help Mission","perpetualchurch@att.net","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db022d56872d8b","Sacred Heart Catholic Church","rectory@sacredheartfamily.com","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db02416ca4c976","Saint Clare Catholic Church","info@stclarechurch.net","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db02416f7b242b","Saint Francis of Assisi","stfrancisrbf@gmail.com","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db022c4c6f5c21","Saint Joan of Arc","info_church@stjoan.org","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db0241f296f759","Saint John Fisher Catholic Church","sjf@stjohnfisherwpb.com","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db0245a52037df","Saint John the Evangelist","office@stjohnevangelistbr.org","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db022c41005a42","Saint Jude Catholic Church","info@stjudeboca.org","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db022e29244be1","Saint Jude Church","info@stjudechurch.net","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db024401b864c8","Saint Juliana Catholic Church","officeadmin@stjulianawpb.com","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db024418b651d2","Saint Lucy Catholic Church","stlucys@bellsouth.net","Churches","Apr21","Bounced","BOUNCED — address not found"],
+  ["19db0244018a051d","Saint Luke Catholic Church","frandrew@stlukeparish.com","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db022df449e637","Saint Mark Catholic Church","maskar@stmarkboynton.com","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db024280ad8470","Saint Mary of Pahokee","office@stmaryofpahokee.com","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db022d6c2985d6","Saint Matthew Catholic Church","frclemh@bellsouth.net","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db024170503004","Saint Patrick Catholic Church","donna@stpatrickchurch.org","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db0241699ecee9","Saint Paul of the Cross","office@paulcross.org","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db022ea477aca8","Saint Peter Catholic Church","office@stpeterjupiter.com","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db0242afdeb28c","Saint Philip Benizi","stphilipbenizicc21@gmail.com","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db0242884ee6b3","Saint Rita Catholic Church","office@saintrita.com","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db022d5136d733","Saint Therese de Lisieux","frontoffice@sttherese-church.org","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db024411657cb0","Saint Thomas More Catholic Church","operations@stmbb.org","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db022bef2679e5","Saint Vincent Ferrer","office@stvincentferrer.com","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db027c5b6c9494","Temple Emanu-El","officesec@tepb.org","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db022cb211e902","Union Congregational UCC","office@unionucc.net","Churches","Apr21","Sent","Batch:Apr21"],
+  ["19db027c4b793601","Palm Beach Dental Specialists","info@pbdentalspecialists.com","Dental Practices","Apr21","Sent","Batch:Apr21"],
+  ["19db025d224baf3e","Greenacres Bowl","info@gatorbowling.com","Entertainment","Apr21","Bounced","BOUNCED — address not found"],
+  ["19db0248bfe7b008","Edgley Cremation Services","edgleycremation@gmail.com","Funeral Homes","Apr21","Sent","Batch:Apr21"],
+  ["19db0245a04530c2","Gary Panoch Funeral Home","gpfh2@ymail.com","Funeral Homes","Apr21","Sent","Batch:Apr21"],
+  ["19db025fc22560fb","Kronish Funeral Services","info@kronishfuneral.com","Funeral Homes","Apr21","Sent","Batch:Apr21"],
+  ["19db024722f6d635","Lakeside Funeral Home","info@lakesidemem.com","Funeral Homes","Apr21","Sent","Batch:Apr21"],
+  ["19db027dc7958e3a","Northwood Funeral Home","northwoodfuneralhome@gmail.com","Funeral Homes","Apr21","Sent","Batch:Apr21"],
+  ["19db027f72a63404","Tillman Funeral Home","tillmanfuneralhome@comcast.net","Funeral Homes","Apr21","Sent","Batch:Apr21"],
+  ["19db027ddaaedd5d","Boca Delray Golf & Country Club","golfshop@bocadelray.net","Golf Courses","Apr21","Sent","DELAY — delivery still retrying (not a hard bounce)"],
+  ["19db02614a5740f0","John Prince Golf Learning Center","jcalderon@pbc.gov","Golf Courses","Apr21","Sent","Batch:Apr21"],
+  ["19db02614604a441","Okeeheelee Golf Course","rsmolen@pbc.gov","Golf Courses","Apr21","Sent","Batch:Apr21"],
+  ["19db026153c99a0f","Osprey Point Golf Course","gdixon@pbc.gov","Golf Courses","Apr21","Sent","Batch:Apr21"],
+  ["19db0262ed2e55f0","Palm Beach National Golf Course","nadia@palmbeachnational.com","Golf Courses","Apr21","Sent","Batch:Apr21"],
+  ["19db0262e8e8a09b","Park Ridge Golf Course","ssteinemann@pbc.gov","Golf Courses","Apr21","Sent","Batch:Apr21"],
+  ["19db0262efe64289","Southwinds Golf Course","spainter@pbc.gov","Golf Courses","Apr21","Sent","Batch:Apr21"],
+  ["19db027a4e821725","Beaches Laundry Service","hello@beacheslaundryservice.com","Laundromats","Apr21","Sent","Batch:Apr21"],
+  ["19db027a49b31a71","D and J Laundry","dandjlaundry@gmail.com","Laundromats","Apr21","Sent","Batch:Apr21"],
+  ["19db025ca171c8c7","Gateway Marina","chris@gatewaymarina.net","Marinas","Apr21","Sent","Batch:Apr21"],
+  ["19db025cbbae67b0","Palm Beach Marina","dockmaster@townofpalmbeach.com","Marinas","Apr21","Sent","Batch:Apr21"],
+  ["19db0279d5c7c232","Palm Beach Yacht Center","dock@palmbeachyacht.com","Marinas","Apr21","Replied","REPLY (4/22): Polite decline — no immediate need for pressure washing. Dock manager wrote."],
+  ["19db027a4bcc8141","Soverel Harbour Marina","stacey@soverelmarina.com","Marinas","Apr21","Sent","Batch:Apr21"],
+  ["19db022e2a0f35b6","Furry Friends Adoption Clinic and Ranch","info@furryfriendsadoption.org","Veterinary Clinics","Apr21","Sent","Batch:Apr21"],
+  ["19db022e28eceb60","Medvet Jupiter","info.jupiter@medvet.com","Veterinary Clinics","Apr21","Sent","Batch:Apr21"],
+  ["19db025e1c03c573","Prosperity Brewers","info@prosperitybrewers.com","Wineries & Breweries","Apr21","Replied","REPLY (4/21): Dominick Peri (dp@prosperitybrewers.com) responded. Follow up!"],
+  ["19db0279cc8a8e62","American Heritage Schools","admissions.palmbeach@ahschool.com","Private Schools & Daycares","Apr21","Sent","Batch:Apr21"],
+  ["19db0279ce53ce0b","Summit Kids Academy","northtree@summitkids.com","Private Schools & Daycares","Apr21","Sent","Batch:Apr21"],
+  ["19db025d3edf2b2e","The Greene School","info@thegreeneschool.com","Private Schools & Daycares","Apr21","Sent","Batch:Apr21"],
+  ["19db0279c392acd9","The Kings Academy","Admissions@tka.net","Private Schools & Daycares","Apr21","Sent","Batch:Apr21"],
+  ["19db025d20242cac","Juno Ocean Walk RV Resort","rentals@jowr.net","RV Parks","Apr21","Bounced","BOUNCED — domain jowr.net not found"],
+  ["19db025e04b923f4","Catering CC","info@cateringcc.com","Restaurants","Apr21","Sent","Batch:Apr21"],
+  ["19db02473e4d653d","El Camino Boca Raton","info@elcaminoboca.com","Restaurants","Apr21","Sent","Batch:Apr21"],
+  ["19db0245b7aef614","El Camino Delray Beach","info@elcaminodelray.com","Restaurants","Apr21","Sent","Batch:Apr21"],
+  ["19db0245a37bb151","El Camino West Palm Beach","info@elcaminowpb.com","Restaurants","Apr21","Sent","Batch:Apr21"],
+  ["19db02472e43dc0b","Harrys Bar & Restaurant","wpb@harrysrestaurantgroup.com","Restaurants","Apr21","Sent","Batch:Apr21"],
+  ["19db02614aec39bd","Hugos Gourmet Catering","hugosgourmet@yahoo.com","Restaurants","Apr21","Sent","Batch:Apr21"],
+  ["19db027c40161b83","Mamma Mias Trattoria","mammamiastrattoria@gmail.com","Restaurants","Apr21","Sent","Batch:Apr21"],
+  ["19db024729fadfe9","Modern Restaurant Group","admin@modernrestaurantgroup.com","Restaurants","Apr21","Sent","Batch:Apr21"],
+  ["19db027dc4750b37","Rollatini Italian Restaurant","rollatinirestaurant@gmail.com","Restaurants","Apr21","Bounced","BOUNCED — address not found"],
+  ["19db027aedb946b9","Salute Market","michelle@salute2u.com","Restaurants","Apr21","Sent","Batch:Apr21"],
+  ["19db025ca8114981","Lake Worth Storage","info@lakeworthstorage.com","Self-Storage Facilities","Apr21","Sent","Batch:Apr21"],
+  ["19db022dfbf65fe3","ACCESS Specialty Animal Hospital","info@accessvet.com","Veterinary Clinics","Apr21","Sent","Batch:Apr21"],
+  ["19db027af07961d7","Animal Medical Center of Jupiter","amcjupiter@gmail.com","Veterinary Clinics","Apr21","Sent","Batch:Apr21"],
+  ["19db022e266013f6","Barky Pines Animal Rescue","Clinic@barkypines.org","Veterinary Clinics","Apr21","Sent","Batch:Apr21"],
+  ["19db025fbd67c688","Boca Raton Veterinary Clinic","info@bocavetclinic.com","Veterinary Clinics","Apr21","Sent","Batch:Apr21"],
+  ["19db0281336704a5","Boynton Beach Animal Hospital","boyntonbeachanimalhospital1@gmail.com","Veterinary Clinics","Apr21","Sent","Batch:Apr21"],
+  ["19db028129b521c5","Coastal Veterinary Clinic","coastalvetdelray@yahoo.com","Veterinary Clinics","Apr21","Sent","Batch:Apr21"],
+  ["19db02812f0eb563","Delray Beach Animal Hospital","info@delrayanimal.com","Veterinary Clinics","Apr21","Sent","Batch:Apr21"],
+  ["19db022dcebc31b5","Mid County Veterinary Hospital","midcountyvethospital@gmail.com","Veterinary Clinics","Apr21","Sent","Batch:Apr21"],
+  ["19db025d3743af8f","Paws Veterinary Clinic","info@pawsvc.com","Veterinary Clinics","Apr21","Sent","Batch:Apr21"],
+  ["19db022de728d0e8","Paws2Health Veterinary Clinic","paws2healthclinic@gmail.com","Veterinary Clinics","Apr21","Sent","Batch:Apr21"],
+  ["19db027f4eb2ed56","Civil Society Brewing","info@civilsocietybrewing.com","Wineries & Breweries","Apr21","Sent","Batch:Apr21"],
+  ["19db025e0a14bfe9","Garden District Taproom","cheers@gardendistrictwpb.com","Wineries & Breweries","Apr21","Sent","Batch:Apr21"],
+  ["19db027f5aa76f6f","Mathews Brewing Co","info@mathewsbrewingcompany.com","Wineries & Breweries","Apr21","Sent","Batch:Apr21"],
+  ["19db025fa90d658b","The Brewhouse Gallery","Info@brewhousegallery.com","Wineries & Breweries","Apr21","Sent","Batch:Apr21"],
+  ["19db5a64557eb8ce","Davenport Professional Property Management","info@davenportpro.net","Apartment Buildings / HOA-governed properties","Apr22","Sent","Batch:Apr22"],
+  ["19db5a64834e0084","Hawk-Eye Management","info@hawkeyefla.com","Apartment Buildings / HOA-governed properties","Apr22","Sent","Batch:Apr22"],
+  ["19db5a6487702ba6","Lake Charleston HOA","propertymanager@lcmahoa.com","Apartment Buildings / HOA-governed properties","Apr22","Sent","Batch:Apr22"],
+  ["19db68f96d8f5801","Palms Edge Assisted Living and Memory Care","palmsedgealf@aol.com","Assisted Living Facilities","Apr22","Sent","Batch:Apr22"],
+  ["19db68fb98700b4e","The Club at Boynton Beach","info@theclubatboyntonbeach.com","Assisted Living Facilities","Apr22","Bounced","BOUNCED — info wasn't found at theclubatboyntonbeach.com"],
+  ["19db68f9da38110a","Watercrest Palm Beach Gardens","palmbeachgardens@watercrestseniorliving.com","Assisted Living Facilities","Apr22","Sent","Batch:Apr22"],
+  ["19db68faa2e9ebca","Palm Beach Auto Group","sales@palmbeach-autogroup.com","Auto Dealers","Apr22","Sent","Batch:Apr22"],
+  ["19db5a63c3df3c9b","Mundo M Event Hall","info@mundomeventhall.com","Banquet / Event Venues","Apr22","Sent","Batch:Apr22"],
+  ["19db5a63ce7f3264","The Majestic Ballroom","info@majesticballroomwpb.com","Banquet / Event Venues","Apr22","Sent","Batch:Apr22"],
+  ["19db5a641950dd08","Boca Raton Paint & Body","office@bocapb.com","Body Shops","Apr22","Sent","Batch:Apr22"],
+  ["19db68fbbdb4ce9c","Griffin Auto Care","info@griffinautocare.com","Body Shops","Apr22","Sent","Batch:Apr22"],
+  ["19db691beac635b3","Jupiter Auto Body","info@jupiterautobody.com","Body Shops","Apr22","Sent","Batch:Apr22"],
+  ["19db68fba5343c17","Wellington Auto Collision","wellingtoncol@aol.com","Body Shops","Apr22","Sent","Batch:Apr22"],
+  ["19db68fc309facc4","Lenny's Car Wash","help@lennyscarwash.com","Car Washes","Apr22","Bounced","BOUNCED — rejected by recipient's provider"],
+  ["19db68f91543f8a1","Mint Eco Car Wash - Golden Lakes","info1950@mintecocarwash.com","Car Washes","Apr22","Sent","Batch:Apr22"],
+  ["19db68f93a57c02e","Mint Eco Car Wash - Jupiter","infojupiter@mintecocarwash.com","Car Washes","Apr22","Sent","Batch:Apr22"],
+  ["19db68f8c003b635","Mint Eco Car Wash - Okeechobee","info5577@mintecocarwash.com","Car Washes","Apr22","Sent","Batch:Apr22"],
+  ["19db68f8d391fe22","Mint Eco Car Wash - Palm Beach Lakes","1890pbl@mintecocarwash.com","Car Washes","Apr22","Sent","Batch:Apr22"],
+  ["19db68f8e4ef7319","Mint Eco Car Wash - Southend","infowpb@mintecocarwash.com","Car Washes","Apr22","Opened","AUTO-REPLY: Yeanette Marchese no longer with Mint Eco. Try Caroline Mathen (HR)."],
+  ["19db68fa32a7586b","Grace Fellowship","info@gograce.church","Churches","Apr22","Sent","Batch:Apr22"],
+  ["19db691c69598294","New Life Alliance Church","nlacoffice@newlifealliance.org","Churches","Apr22","Sent","Batch:Apr22"],
+  ["19db691c7e234609","Palm Beach Lakes Church of Christ","office@pblcoc.org","Churches","Apr22","Sent","Batch:Apr22"],
+  ["19db68faa33d5f24","Cinemas - Century Village Theater","idoffice.wpb@cenrec.com","Cinemas","Apr22","Sent","Batch:Apr22"],
+  ["19db68faa8ba5556","Duncan Theatre","theatreservices@pbsc.edu","Cinemas","Apr22","Opened","AUTO-REPLY: Box office generic (M-F 10-5). Not a real reply."],
+  ["19db691d42ce5477","Stonzek Theatre at Lake Worth Playhouse","filmstaff@lakeworthplayhouse.org","Cinemas","Apr22","Sent","Batch:Apr22"],
+  ["19db68fa25357cbb","Boynton Implants and Cosmetic Dentistry","boyntonbeachdental@gmail.com","Dental Practices","Apr22","Sent","Batch:Apr22"],
+  ["19db68fe8a8f80eb","Dental Center of Wellington","info@busselldental.com","Dental Practices","Apr22","Sent","Batch:Apr22"],
+  ["19db68f9cffd548e","Eriks Dental Group","info@eriksdentalgroup.com","Dental Practices","Apr22","Sent","Batch:Apr22"],
+  ["19db68fd93aa1d5d","Family Dental Care West Palm Beach","familydentalcare561@gmail.com","Dental Practices","Apr22","Sent","Batch:Apr22"],
+  ["19db68fcb4cc743c","Habashy Dental","info@habashydental.com","Dental Practices","Apr22","Bounced","BOUNCED — info wasn't found at habashydental.com"],
+  ["19db68fd87de362c","Hometown Dentistry","frontdesk@hometownteeth.com","Dental Practices","Apr22","Sent","Batch:Apr22"],
+  ["19db5a64194149a8","Intercoastal Dental","info@intercoastaldental.com","Dental Practices","Apr22","Sent","Batch:Apr22"],
+  ["19db68f8cfc83054","North Palm Dental Care","smile@northpalmdentalcare.com","Dental Practices","Apr22","Sent","Batch:Apr22"],
+  ["19db68fe97f5beac","Pearl Palm Beach Dental","info@pearlpb.com","Dental Practices","Apr22","Sent","Batch:Apr22"],
+  ["19db68fda8ddaff2","Rudnick Dentistry","info@rudnickdentistry.com","Dental Practices","Apr22","Sent","Batch:Apr22"],
+  ["19db5a65286ebfa7","Ananda Yoga + Pilates","hello@anandayogapb.com","Fitness Centers / Gyms","Apr22","Sent","Batch:Apr22"],
+  ["19db5a6414ac2fad","CrossFit HYPE","info@crossfithype.com","Fitness Centers / Gyms","Apr22","Sent","Batch:Apr22"],
+  ["19db5a63c8d3932b","Loggerhead Fitness","info@loggerheadfitness.com","Fitness Centers / Gyms","Apr22","Sent","Batch:Apr22"],
+  ["19db5a64f8c45567","Native Yoga Center","info@nativeyogacenter.com","Fitness Centers / Gyms","Apr22","Sent","Batch:Apr22"],
+  ["19db5a653bc2fe80","Pilates Studio 1","info@pilatesstudio1.com","Fitness Centers / Gyms","Apr22","Sent","Batch:Apr22"],
+  ["19db68fa533c6e98","Anago Cremations","zulickdavidm@gmail.com","Funeral Homes","Apr22","Sent","Batch:Apr22"],
+  ["19db68fa426d44e2","Lorne & Sons Funeral Home","info@lorneandsons.com","Funeral Homes","Apr22","Sent","Batch:Apr22"],
+  ["19db68fc3981ce66","Abacoa Golf Club","info@abacoagolfclub.com","Golf Courses","Apr22","Sent","Batch:Apr22"],
+  ["19db68fc3761c33d","The Links at Boynton Beach","reeps@bbfl.us","Golf Courses","Apr22","Sent","Batch:Apr22"],
+  ["19db68f9183c44bd","Blue Bubble Laundry","bluebubblelaundry@hotmail.com","Laundromats","Apr22","Sent","Batch:Apr22"],
+  ["19db68fd3847b33d","Cleanzone Laundry","contact@cleanzonelaundry.com","Laundromats","Apr22","Sent","Batch:Apr22"],
+  ["19db68fd257ee86c","Loads-N-Suds","loadsnsuds@gmail.com","Laundromats","Apr22","Sent","Batch:Apr22"],
+  ["19db68fc2bee4178","Jupiter Yacht Club Marina","dockmaster@jycmarina.com","Marinas","Apr22","Sent","Batch:Apr22"],
+  ["19db5a64f4d27b4a","Coastal Family Practice & Internal Medicine","staff@coastalfamilypractice.health","Medical Offices","Apr22","Sent","Batch:Apr22"],
+  ["19db5a6406a85eb6","LA Medical Associates","info@lamedicalpb.com","Medical Offices","Apr22","Sent","Batch:Apr22"],
+  ["19db5a64f1ecaf78","North Palm Family Practice","info@northpalmfamilypractice.com","Medical Offices","Apr22","Sent","Batch:Apr22"],
+  ["19db5a63cdb77c6d","Primary Care Palm Beach","info@primarycarepb.com","Medical Offices","Apr22","Sent","Batch:Apr22"],
+  ["19db5a64e7077416","Sport & Spinal Rehab","info@thejupiterchiropractor.com","Medical Offices","Apr22","Sent","Batch:Apr22"],
+  ["19db691bf0642d4a","A&H Automotive","info@ahdelray.com","Body Shops","Apr22","Sent","Batch:Apr22"],
+  ["19db68f9716044b8","Alef Preschool of Palm Beach","info@alefpalmbeach.com","Private Schools & Daycares","Apr22","Sent","Batch:Apr22"],
+  ["19db68fb355776e3","Fusion Academy Palm Beach Gardens","palmbeach@fusionacademy.com","Private Schools & Daycares","Apr22","Sent","Batch:Apr22"],
+  ["19db691d5e9d6b32","Gardens Learning Center","info@glckids.com","Private Schools & Daycares","Apr22","Sent","Batch:Apr22"],
+  ["19db691d46a0dfd2","Little Blue Academy","littleblueacademy@yahoo.com","Private Schools & Daycares","Apr22","Sent","Batch:Apr22"],
+  ["19db68fbb2677e31","Little Steps Academy","littlestepsacademydaycare@gmail.com","Private Schools & Daycares","Apr22","Sent","Batch:Apr22"],
+  ["19db68fb239fa144","Palm Beach International Academy","info@pbiafl.com","Private Schools & Daycares","Apr22","Sent","Batch:Apr22"],
+  ["19db68f96d350e4e","Palm Beach Preschool","parents@palmbeachpreschool.com","Private Schools & Daycares","Apr22","Sent","Batch:Apr22"],
+  ["19db68f91c00b200","South Bay RV Campground","sbcamp@pbc.gov","RV Parks","Apr22","Sent","Batch:Apr22"],
+  ["19db691d4ccd5374","West Jupiter RV Resort","westjupiter@treehousecommunities.com","RV Parks","Apr22","Sent","Batch:Apr22"],
+  ["19db68fcbefbeed6","50 Ocean","info@50ocean.com","Restaurants","Apr22","Sent","Batch:Apr22"],
+  ["19db68f9c12dc604","Banter","info@banterwpb.com","Restaurants","Apr22","Bounced","BOUNCED — remote server misconfigured"],
+  ["19db68fb2c332b5d","Carmine's Market","catering@carmines.com","Restaurants","Apr22","Sent","Batch:Apr22"],
+  ["19db68f9d56e6edd","Driftwood Restaurant","info@driftwoodboynton.com","Restaurants","Apr22","Sent","Batch:Apr22"],
+  ["19db68fca1faf740","The Grove Delray Beach","christine@thegrovedelray.com","Restaurants","Apr22","Replied","REPLY (4/23): Christine Haycook responded — follow up!"],
+  ["19db68faad658fee","Waterway Cafe","info@waterwaycafe.com","Restaurants","Apr22","Sent","Batch:Apr22"],
+  ["19db68fd2e2e3fc1","Gator State Storage - Haverhill","haverhill@statestoragegroup.com","Self-Storage Facilities","Apr22","Sent","Batch:Apr22"],
+  ["19db68fd800fac5a","Lantana Self Storage","customerservice@lantanaselfstorage.com","Self-Storage Facilities","Apr22","Sent","Batch:Apr22"],
+  ["19db691c75cfce92","Clematis Animal Clinic","info@clematisanimalclinic.com","Veterinary Clinics","Apr22","Sent","Batch:Apr22"],
+  ["19db691c770b4603","Ibis Animal Hospital","office@ibisanimalhospital.com","Veterinary Clinics","Apr22","Sent","Batch:Apr22"],
+  ["19db68fc972a3efe","Imperial Point Animal Hospital of Delray","info@mydelrayvet.com","Veterinary Clinics","Apr22","Sent","Batch:Apr22"],
+  ["19db68fb216f8a66","Lifetime Veterinary Center","lifetimevet@yahoo.com","Veterinary Clinics","Apr22","Bounced","BOUNCED — address not found"],
+  ["19db5a648d4799c1","Native Palm Animal Hospital","frontdesk@nativepalmanimalhospital.com","Veterinary Clinics","Apr22","Sent","Batch:Apr22"],
+  ["19db68fd333ae963","Village Square Veterinary Clinic","info@villagesquarevetclinic.com","Veterinary Clinics","Apr22","Sent","Batch:Apr22"],
+  ["19db691bd390157b","Coastal Karma Brewery","beer@coastalkarmabrewing.com","Wineries & Breweries","Apr22","Sent","Batch:Apr22"],
+  ["19db691bf3776c77","Steam Horse Brewing Co.","info@steamhorsebrewing.com","Wineries & Breweries","Apr22","Sent","Batch:Apr22"],
+  ["19db68f9718f972c","Twisted Trunk Brewing Co.","info@twistedtrunkbrewing.com","Wineries & Breweries","Apr22","Sent","Batch:Apr22"]
+];
+
+const SEED = {
+  campaigns: [
+    {
+      id:"c1",
+      name:"Apr 21 Outreach — Churches, Vets, Funerals, Golf, Marinas",
+      segment:"Mixed",
+      status:"Active",
+      launch:"2026-04-21",
+      target:102,
+      subject:"Quick question about [Company]'s building exterior",
+      notes:"102 emails sent 4/21/26 from asappressurecleaning@gmail.com. Palm Beach County, heavy on Catholic churches/parishes, veterinary clinics, golf courses, funeral homes, marinas, breweries."
+    },
+    {
+      id:"c2",
+      name:"Apr 22 Outreach — Dental, HOA, Fitness, Dealers, Restaurants",
+      segment:"Mixed",
+      status:"Active",
+      launch:"2026-04-22",
+      target:80,
+      subject:"Quick question about [Company]'s building exterior",
+      notes:"80 emails sent 4/22/26 in two batches (10:44am, 7:02pm EDT). Verticals: dental practices, HOAs, medical offices, fitness/gyms, restaurants, auto dealers, car washes."
+    }
+  ],
+  leads: _RAW_LEADS.map(([id, company, email, segment, batch, stage, notes]) => {
+    const campaign = batch === "Apr21" ? "c1" : "c2";
+    const last = batch === "Apr21" ? "2026-04-21" : "2026-04-22";
+    const nextDate = batch === "Apr21" ? "2026-04-28" : "2026-04-29";
+    let next = "Follow-up if no reply";
+    if (stage === "Bounced") next = "Find alternate email / try phone";
+    else if (stage === "Replied") next = "Respond personally — quote or call";
+    else if (stage === "Opened") next = "Await human reply (auto-reply received)";
+    return { id, company, contact:"", title:"", email, phone:"", segment, campaign, stage, value:0, last, nextDate, next, notes };
+  }),
+  campaignStats: {
+    c1:{ sent:102, opens:0, replies:3, meetings:0, bounced:6 },
+    c2:{ sent:80,  opens:2, replies:1, meetings:0, bounced:5 }
+  }
+};
+
+/* ====== State ====== */
+let state = load();
+let campFilter = null;
+let editingLeadId = null, editingCampId = null;
+
+function load(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    if(!raw) return structuredClone(SEED);
+    const s = JSON.parse(raw);
+    if(!s.campaigns || !s.leads) return structuredClone(SEED);
+    return s;
+  }catch(e){ return structuredClone(SEED); }
+}
+function save(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+function uid(){ return "x"+Math.random().toString(36).slice(2,10); }
+
+/* ====== Rendering ====== */
+function $(s){return document.querySelector(s)}
+function fmt$(n){ if(!n) return "—"; return "$"+Number(n).toLocaleString() }
+function fmtPct(a,b){ if(!b) return "—"; return Math.round((a/b)*100)+"%" }
+
+function computeCampaign(c){
+  const stats = state.campaignStats[c.id] || {sent:0,opens:0,replies:0,meetings:0};
+  const leads = state.leads.filter(l=>l.campaign===c.id);
+  const quotedSum = leads.filter(l=>l.stage==="Quoted"||l.stage==="Won").reduce((s,l)=>s+(+l.value||0),0);
+  const wonSum = leads.filter(l=>l.stage==="Won").reduce((s,l)=>s+(+l.value||0),0);
+  return {...c, ...stats, leadCount:leads.length, quotedSum, wonSum};
+}
+
+function renderKPIs(){
+  const leads = state.leads;
+  const totalSent   = Object.values(state.campaignStats).reduce((s,x)=>s+(x.sent||0),0);
+  const totalOpens  = Object.values(state.campaignStats).reduce((s,x)=>s+(x.opens||0),0);
+  const totalReplies= Object.values(state.campaignStats).reduce((s,x)=>s+(x.replies||0),0);
+  const totalMeet   = Object.values(state.campaignStats).reduce((s,x)=>s+(x.meetings||0),0);
+  const totalBounce = leads.filter(l=>l.stage==="Bounced").length;
+  const pipeline    = leads.filter(l=>!["Won","Lost","Bounced"].includes(l.stage)).reduce((s,l)=>s+(+l.value||0),0);
+  const won         = leads.filter(l=>l.stage==="Won").reduce((s,l)=>s+(+l.value||0),0);
+  const deliverable = totalSent - totalBounce;
+  const replyRate   = deliverable ? Math.round(totalReplies/deliverable*100) : 0;
+  const bounceRate  = totalSent ? Math.round(totalBounce/totalSent*100) : 0;
+
+  const items = [
+    {label:"Leads", value:leads.length, sub:`across ${state.campaigns.length} campaigns`},
+    {label:"Emails sent", value:totalSent.toLocaleString(), sub:`${deliverable} delivered`},
+    {label:"Bounced", value:totalBounce, sub:`${bounceRate}% bounce rate`},
+    {label:"Auto-replies", value:totalOpens, sub:"delivered (auto)"},
+    {label:"Real replies", value:totalReplies, sub:`${replyRate}% of delivered`},
+    {label:"Meetings", value:totalMeet, sub:""},
+    {label:"Pipeline", value:fmt$(pipeline), sub:"open deals"},
+    {label:"Won", value:fmt$(won), sub:"closed revenue"}
+  ];
+  $("#kpis").innerHTML = items.map(k=>`
+    <div class="kpi"><div class="label">${k.label}</div>
+      <div class="value num">${k.value}</div>
+      <div class="sub">${k.sub||""}</div>
+    </div>`).join("");
+}
+
+function renderCampaigns(){
+  const q = ($("#campSearch").value||"").toLowerCase();
+  const tbody = $("#campTable tbody");
+  const rows = state.campaigns
+    .map(computeCampaign)
+    .filter(c => !q || [c.name,c.segment,c.status].join(" ").toLowerCase().includes(q));
+  tbody.innerHTML = rows.map(c => {
+    const statusClass = c.status==="Active"?"good":c.status==="Paused"?"warn":c.status==="Complete"?"info":"ghost";
+    const active = campFilter===c.id ? "background:#0f1f38" : "";
+    return `<tr style="cursor:pointer;${active}" onclick="filterByCampaign('${c.id}')">
+      <td><b>${esc(c.name)}</b><div class="muted" style="font-size:11px">${esc(c.subject||"")}</div></td>
+      <td><span class="pill">${esc(c.segment)}</span></td>
+      <td><span class="chip ${statusClass}">${esc(c.status)}</span></td>
+      <td class="num">${c.leadCount}</td>
+      <td class="num">${c.sent||0}</td>
+      <td class="num">${fmtPct(c.opens,c.sent)}</td>
+      <td class="num">${fmtPct(c.replies,c.sent)}</td>
+      <td class="num">${c.meetings||0}</td>
+      <td class="num">${fmt$(c.quotedSum)}</td>
+      <td class="num" style="color:#86efac">${fmt$(c.wonSum)}</td>
+      <td><button class="ghost" onclick="event.stopPropagation();openCampaignModal('${c.id}')">Edit</button></td>
+    </tr>`;
+  }).join("") || `<tr><td colspan="11" class="muted" style="text-align:center;padding:20px">No campaigns match.</td></tr>`;
+}
+
+function filterByCampaign(id){
+  campFilter = (campFilter===id ? null : id);
+  renderAll();
+}
+function clearCampaignFilter(){ campFilter=null; renderAll(); }
+
+function renderFunnel(){
+  const leads = campFilter ? state.leads.filter(l=>l.campaign===campFilter) : state.leads;
+  const byStage = Object.fromEntries(STAGES.map(s=>[s,0]));
+  leads.forEach(l=>{ if(byStage[l.stage]!=null) byStage[l.stage]++ });
+  const max = Math.max(1,...Object.values(byStage));
+  const rows = STAGES.filter(s=>s!=="Lost").map(s=>{
+    const n = byStage[s]||0;
+    const pct = (n/max)*100;
+    return `<div class="rowf">
+      <div class="label"><span class="stage-dot ${STAGE_CLASS[s]}"></span>${s}</div>
+      <div class="track"><div class="fill" style="width:${pct}%"></div></div>
+      <div class="count">${n}</div>
+    </div>`;
+  }).join("");
+  $("#funnel").innerHTML = rows + `<div class="rowf">
+      <div class="label"><span class="stage-dot" style="background:#ef4444"></span>Lost</div>
+      <div class="track"><div class="fill" style="width:${(byStage.Lost/max)*100}%;background:linear-gradient(90deg,#ef4444,#f87171)"></div></div>
+      <div class="count">${byStage.Lost||0}</div>
+    </div>`;
+
+  const reachedMeeting = (byStage.Meeting||0)+(byStage.Quoted||0)+(byStage.Won||0);
+  const top = (byStage.New||0)+(byStage.Sent||0)+(byStage.Opened||0)+(byStage.Replied||0)+reachedMeeting+(byStage.Lost||0);
+  const convNewToMeet = top ? Math.round(reachedMeeting/top*100) : 0;
+  const openDeals = leads.filter(l=>!["Won","Lost"].includes(l.stage)).reduce((s,l)=>s+(+l.value||0),0);
+  const wonDeals = leads.filter(l=>l.stage==="Won").reduce((s,l)=>s+(+l.value||0),0);
+  $("#funnelMetrics").innerHTML = `
+    <div>Leads: <b>${leads.length}</b></div>
+    <div>→ Meeting+: <b>${reachedMeeting}</b></div>
+    <div>Conv to meeting: <b>${convNewToMeet}%</b></div>
+    <div>Pipeline $: <b>${fmt$(openDeals)}</b></div>
+    <div>Won $: <b style="color:#86efac">${fmt$(wonDeals)}</b></div>`;
+  $("#funnelCtx").textContent = campFilter ? (state.campaigns.find(c=>c.id===campFilter)?.name||"") : "all campaigns";
+}
+
+function renderLeads(){
+  const q = ($("#leadSearch").value||"").toLowerCase();
+  const fs = $("#filterStage").value;
+  const fseg = $("#filterSegment").value;
+  let rows = state.leads.slice();
+  if(campFilter) rows = rows.filter(l=>l.campaign===campFilter);
+  if(fs) rows = rows.filter(l=>l.stage===fs);
+  if(fseg) rows = rows.filter(l=>l.segment===fseg);
+  if(q) rows = rows.filter(l=>[l.company,l.contact,l.email,l.title,l.notes].join(" ").toLowerCase().includes(q));
+
+  // populate filter options once
+  if(!$("#filterStage").dataset.ready){
+    $("#filterStage").insertAdjacentHTML("beforeend", STAGES.map(s=>`<option>${s}</option>`).join(""));
+    $("#filterStage").dataset.ready="1";
+  }
+  if(!$("#filterSegment").dataset.ready){
+    $("#filterSegment").insertAdjacentHTML("beforeend", SEGMENTS.map(s=>`<option>${esc(s)}</option>`).join(""));
+    $("#filterSegment").dataset.ready="1";
+  }
+
+  const campById = Object.fromEntries(state.campaigns.map(c=>[c.id,c]));
+  $("#leadTable tbody").innerHTML = rows.map(l=>{
+    const camp = campById[l.campaign];
+    const stageCls = l.stage==="Won"?"good":l.stage==="Lost"?"bad":l.stage==="Meeting"||l.stage==="Quoted"?"warn":"info";
+    return `<tr ondblclick="openLeadModal('${l.id}')">
+      <td><b>${esc(l.company||"—")}</b>${l.phone?`<div class="muted" style="font-size:11px">${esc(l.phone)}</div>`:""}</td>
+      <td>${esc(l.contact||"—")}<div class="muted" style="font-size:11px">${esc(l.title||"")} ${l.email?`· <a href="mailto:${esc(l.email)}">${esc(l.email)}</a>`:""}</div></td>
+      <td><span class="pill">${esc(l.segment||"—")}</span></td>
+      <td>${camp?esc(camp.name):"<span class=muted>—</span>"}</td>
+      <td><span class="chip ${stageCls}"><span class="stage-dot ${STAGE_CLASS[l.stage]||""}"></span>${esc(l.stage||"—")}</span></td>
+      <td class="num">${fmt$(l.value)}</td>
+      <td>${esc(l.last||"—")}</td>
+      <td>${l.nextDate?`<b>${esc(l.nextDate)}</b> `:""}${esc(l.next||"")}</td>
+      <td><button class="ghost" onclick="openLeadModal('${l.id}')">Edit</button></td>
+    </tr>`;
+  }).join("") || `<tr><td colspan="9" class="muted" style="text-align:center;padding:24px">No leads match filters.</td></tr>`;
+  $("#leadCount").textContent = `${rows.length} of ${state.leads.length} leads`;
+  $("#leadCtx").textContent = campFilter ? `filtered by: ${state.campaigns.find(c=>c.id===campFilter)?.name}` : "showing all";
+}
+
+function renderAll(){ renderKPIs(); renderCampaigns(); renderFunnel(); renderLeads(); save(); }
+
+/* ====== Modals ====== */
+function openModal(id){ $("#"+id).classList.add("on") }
+function closeModal(id){ $("#"+id).classList.remove("on") }
+
+function openLeadModal(id){
+  editingLeadId = id || null;
+  $("#leadModalTitle").textContent = id ? "Edit lead" : "Add lead";
+  $("#leadDelete").style.display = id ? "" : "none";
+  // fill campaign dropdown
+  $("#f_campaign").innerHTML = `<option value="">(none)</option>` + state.campaigns.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join("");
+  const l = id ? state.leads.find(x=>x.id===id) : {stage:"New"};
+  ["company","contact","title","email","phone","segment","campaign","stage","value","last","next_date","next","notes"].forEach(k=>{
+    const field = k==="next_date" ? "nextDate" : k;
+    $("#f_"+k).value = (l && l[field]!=null) ? l[field] : "";
+  });
+  openModal("leadOverlay");
+}
+function saveLead(){
+  const get = k => $("#f_"+k).value.trim();
+  const lead = {
+    id: editingLeadId || uid(),
+    company:get("company"), contact:get("contact"), title:get("title"),
+    email:get("email"), phone:get("phone"), segment:get("segment"),
+    campaign:get("campaign"), stage:get("stage"),
+    value:+get("value")||0, last:get("last"),
+    nextDate:get("next_date"), next:get("next"), notes:get("notes")
+  };
+  if(!lead.company){ alert("Company is required."); return; }
+  if(editingLeadId){
+    state.leads = state.leads.map(x=>x.id===editingLeadId?lead:x);
+  }else{
+    state.leads.push(lead);
+  }
+  closeModal("leadOverlay"); renderAll();
+}
+function deleteLead(){
+  if(!editingLeadId) return;
+  if(!confirm("Delete this lead?")) return;
+  state.leads = state.leads.filter(x=>x.id!==editingLeadId);
+  closeModal("leadOverlay"); renderAll();
+}
+
+function openCampaignModal(id){
+  editingCampId = id || null;
+  $("#campModalTitle").textContent = id ? "Edit campaign" : "Add campaign";
+  $("#campDelete").style.display = id ? "" : "none";
+  const c = id ? state.campaigns.find(x=>x.id===id) : {status:"Draft"};
+  ["name","segment","status","launch","target","subject","notes"].forEach(k=>{
+    $("#c_"+k).value = (c && c[k]!=null) ? c[k] : "";
+  });
+  openModal("campOverlay");
+}
+function saveCampaign(){
+  const get = k => $("#c_"+k).value.trim();
+  const c = {
+    id: editingCampId || uid(),
+    name:get("name"), segment:get("segment"), status:get("status"),
+    launch:get("launch"), target:+get("target")||0,
+    subject:get("subject"), notes:get("notes")
+  };
+  if(!c.name){ alert("Campaign name is required."); return; }
+  if(editingCampId){
+    state.campaigns = state.campaigns.map(x=>x.id===editingCampId?c:x);
+  }else{
+    state.campaigns.push(c);
+    state.campaignStats[c.id] = {sent:0,opens:0,replies:0,meetings:0};
+  }
+  closeModal("campOverlay"); renderAll();
+}
+function deleteCampaign(){
+  if(!editingCampId) return;
+  if(!confirm("Delete this campaign? Leads will keep their reference but lose the name.")) return;
+  state.campaigns = state.campaigns.filter(x=>x.id!==editingCampId);
+  delete state.campaignStats[editingCampId];
+  closeModal("campOverlay"); renderAll();
+}
+
+/* ====== Import / export / reset ====== */
+function exportJSON(){
+  const blob = new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href=url; a.download=`asap-crm-${new Date().toISOString().slice(0,10)}.json`; a.click();
+  URL.revokeObjectURL(url);
+}
+function importJSON(ev){
+  const file = ev.target.files[0]; if(!file) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try{
+      const j = JSON.parse(r.result);
+      if(!j.campaigns || !j.leads) throw 0;
+      state = j; save(); renderAll();
+      alert("Imported.");
+    }catch(e){ alert("Invalid file."); }
+  };
+  r.readAsText(file);
+}
+function resetData(){
+  if(!confirm("Reset back to seed data? This will erase your changes.")) return;
+  state = structuredClone(SEED); save(); renderAll();
+}
+
+/* ====== Util ====== */
+function esc(s){ return (s==null?"":(""+s)).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]) }
+
+/* ====== Init ====== */
+function fillDropdown(el, options){
+  el.innerHTML = options.map(s=>`<option>${esc(s)}</option>`).join("");
+}
+fillDropdown(document.getElementById("f_segment"), SEGMENTS);
+fillDropdown(document.getElementById("c_segment"), SEGMENTS.concat(["Mixed"]).filter((v,i,a)=>a.indexOf(v)===i));
+fillDropdown(document.getElementById("f_stage"), STAGES);
+document.getElementById("today").textContent = new Date().toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});
+renderAll();
+</script>
+</body>
+</html>
