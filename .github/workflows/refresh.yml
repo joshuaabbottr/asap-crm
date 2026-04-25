@@ -1,0 +1,41 @@
+name: Refresh CRM from Gmail
+
+on:
+  workflow_dispatch:
+  # Uncomment to enable daily 9am ET refresh:
+  # schedule:
+  #   - cron: '0 13 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Refresh CRM data
+        env:
+          COMPOSIO_API_KEY: ${{ secrets.COMPOSIO_API_KEY }}
+          COMPOSIO_GMAIL_ACCOUNT_ID: ${{ secrets.COMPOSIO_GMAIL_ACCOUNT_ID }}
+        run: python scripts/refresh_crm.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No changes from Gmail refresh."
+          else
+            git commit -m "Auto-refresh CRM from Gmail [skip ci]"
+            git push
+          fi
