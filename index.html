@@ -97,7 +97,7 @@
   <div class="logo">A</div>
   <div>
     <h1>ASAP Pressure Clean — Lead & Campaign CRM</h1>
-    <small>Email campaign progress and pipeline tracker · <span id="today"></span> · <span class="muted">Gmail synced: <b id="lastSync">Apr 27, 2026</b></span></small>
+    <small>Email campaign progress and pipeline tracker · <span id="today"></span> · <span class="muted">Gmail synced: <b id="lastSync">Apr 30, 2026</b></span></small>
   </div>
   <div class="sp"></div>
   <button class="primary" onclick="openRefreshModal()" title="Pull latest replies, bounces, opens from Gmail">↻ Refresh from Gmail</button>
@@ -112,7 +112,7 @@
 <div class="overlay" id="refreshOverlay"><div class="modal">
   <h3>Refresh from Gmail</h3>
   <div class="content">
-    <p style="margin-top:0">This site shows a snapshot from <b id="lastSyncDetail">Apr 27, 2026</b>.</p>
+    <p style="margin-top:0">This site shows a snapshot from <b id="lastSyncDetail">Apr 30, 2026</b>.</p>
     <p>To pull fresh replies, bounces, and auto-replies from <b>asappressurecleaning@gmail.com</b>, message Claude in chat:</p>
     <pre style="background:#0b172b;border:1px solid var(--line);border-radius:8px;padding:10px;font-size:13px;color:#7dd3fc;white-space:pre-wrap;margin:0">Refresh the ASAP CRM from Gmail</pre>
     <p style="color:var(--ink-dim);font-size:12px;margin-top:12px">Claude queries Gmail via Composio, regenerates the lead list, and pushes to GitHub. Pages redeploys ~30 seconds after — reload this tab to see the update.</p>
@@ -274,7 +274,7 @@ const SEGMENTS = [
   "Other"
 ];
 
-const LS_KEY = "asap_crm_v5";
+const LS_KEY = "asap_crm_v6";
 
 // All 182 leads from asappressurecleaning@gmail.com sent folder (verified via Composio/Gmail on 2026-04-23).
 // Tuple: [gmailThreadId, company, email, segment, batch(Apr21|Apr22), stage, notes]
@@ -560,20 +560,151 @@ const _RAW_LEADS = [
   ["19dcc8db96a36bc1","Fountains of Boynton Animal Hospital","hospital@fountainsah.com","Veterinary Clinics","2026-04-27","Sent","Sent:2026-04-27"],
   ["19dceeea1ecfe55d","Shores Animal Clinic","shoresanimal@gmail.com","Veterinary Clinics","2026-04-27","Sent","Sent:2026-04-27"],
   ["19dceeea1efe8d25","Summit Boulevard Animal Hospital","svpsummit@gmail.com","Veterinary Clinics","2026-04-27","Sent","Sent:2026-04-27"],
-  ["19dcc8dc6cb788f9","West Boca Veterinary Center","info@westbocavet.com","Veterinary Clinics","2026-04-27","Sent","Sent:2026-04-27"]
+  ["19dcc8dc6cb788f9","West Boca Veterinary Center","info@westbocavet.com","Veterinary Clinics","2026-04-27","Sent","Sent:2026-04-27"],
+  ["19dd43055ff1c34a","Worth Avenue Property Management","info@worthavenuepm.com","Apartment Buildings / HOA-governed properties","2026-04-28","Bounced","Sent:2026-04-28 · BOUNCED"],
+  ["19dd43054bfad601","Caliber Collision West Palm Beach","westpalm@caliber.com","Body Shops","2026-04-28","Bounced","Sent:2026-04-28 · BOUNCED"],
+  ["19dd43044bc6c2cf","iPic Theaters Boca Raton","bocaraton@ipic.com","Cinemas","2026-04-28","Bounced","Sent:2026-04-28 · BOUNCED"],
+  ["19dd4307bb1599b9","Spin Cycle Laundromat West Palm Beach","info@spincyclepalmbeach.com","Laundromats","2026-04-28","Bounced","Sent:2026-04-28 · BOUNCED"],
+  ["19dd43044b122ef8","AMC CityPlace 20","manager@amctheatres.com","Other","2026-04-28","Bounced","Sent:2026-04-28 · BOUNCED"],
+  ["19dd43036548e6d2","Al Packer Ford West Palm Beach","info@alpackerford.com","Other","2026-04-28","Bounced","Sent:2026-04-28 · BOUNCED"],
+  ["19dd4304b03256cc","Aloft Delray Beach","rcurran@aloftdelraybeach.com","Other","2026-04-28","Sent","Sent:2026-04-28"],
+  ["19dd43065ef3279e","Downtown at the Gardens","info@downtownatthegardens.com","Other","2026-04-28","Bounced","Sent:2026-04-28 · BOUNCED"],
+  ["19dd4304fe7bcec2","Embassy Suites by Hilton West Palm Beach","info.embassywpb@hilton.com","Other","2026-04-28","Sent","Sent:2026-04-28"],
+  ["19dd43031df312e9","Fortis Institute Palm Springs","palmspringsadmissions@fortis.edu","Other","2026-04-28","Bounced","Sent:2026-04-28 · BOUNCED"],
+  ["19dd4303111df518","HCI College West Palm Beach","info@hcicollege.edu","Other","2026-04-28","Bounced","Sent:2026-04-28 · BOUNCED"],
+  ["19dd4304ad4caa1e","Hilton West Palm Beach","info.westpalmbeach@hilton.com","Other","2026-04-28","Sent","Sent:2026-04-28"],
+  ["19dd4302a9393462","Keiser University - West Palm Beach","studentliving@keiseruniversity.edu","Other","2026-04-28","Sent","Sent:2026-04-28"],
+  ["19dd430301f1192f","Lincoln Tech West Palm Beach","westpalm@lincolntech.edu","Other","2026-04-28","Sent","Sent:2026-04-28"],
+  ["19dd430452d3f5fc","Lion Country Safari KOA","info@lioncountrysafarikoa.com","Other","2026-04-28","Bounced","Sent:2026-04-28 · BOUNCED"],
+  ["19dd4306495adcbf","Maaco Boca Raton","bocaraton@maaco.com","Other","2026-04-28","Sent","Sent:2026-04-28"],
+  ["19dd430300158bcd","Mercedes-Benz of Delray","gm2087@autonation.com","Other","2026-04-28","Sent","Sent:2026-04-28"],
+  ["19dd4306507c9bf9","Mizner Park Shopping Center","info@miznerpark.com","Other","2026-04-28","Sent","Sent:2026-04-28 · DELAY (still retrying)"],
+  ["19dd4302d6c9fa3a","Palm Beach Atlantic University","PublicSafety@pba.edu","Other","2026-04-28","Sent","Sent:2026-04-28"],
+  ["19dd4302ad9cf1b5","Palm Beach State College - Lake Worth","facilities@palmbeachstate.edu","Other","2026-04-28","Sent","Sent:2026-04-28"],
+  ["19dd4307b3e244de","RaceTrac West Palm Beach","customerservice@racetrac.com","Other","2026-04-28","Sent","Sent:2026-04-28"],
+  ["19dd430360393ce1","Schumacher Automotive Group","info@schumacherauto.com","Other","2026-04-28","Sent","Sent:2026-04-28"],
+  ["19dd43055e9f4e6c","Seacrest Services","info@seacrestservices.com","Other","2026-04-28","Sent","Sent:2026-04-28"],
+  ["19dd4304d310063a","The Addison Boca Raton","info@theaddison.com","Other","2026-04-28","Sent","Sent:2026-04-28"],
+  ["19dd4307bef4476f","Wash House Boynton","hello@washhouseboynton.com","Other","2026-04-28","Bounced","Sent:2026-04-28 · BOUNCED"],
+  ["19dd430652db8067","Wawa - Boynton Beach","customerservice@wawa.com","Other","2026-04-28","Sent","Sent:2026-04-28"],
+  ["19dd43025ba821a0","Atlantic Community High School","info.atlantic@palmbeachschools.org","Private Schools & Daycares","2026-04-28","Sent","Sent:2026-04-28"],
+  ["19dd430243cc617f","Boca Raton Community High School","info.bocahigh@palmbeachschools.org","Private Schools & Daycares","2026-04-28","Sent","Sent:2026-04-28"],
+  ["19dd43025e3b8d35","Palm Beach Gardens Community High School","info.pbgardens@palmbeachschools.org","Private Schools & Daycares","2026-04-28","Sent","Sent:2026-04-28"],
+  ["19dd430259a08ee0","Spanish River Community High School","info.spanishriver@palmbeachschools.org","Private Schools & Daycares","2026-04-28","Sent","Sent:2026-04-28"],
+  ["19dd4302935d0dac","Wellington Community High School","info.wellington@palmbeachschools.org","Private Schools & Daycares","2026-04-28","Sent","Sent:2026-04-28"],
+  ["19dd430451405458","Del-Raton RV Park","info@rvparkandtrailersalesdelraybeachfl.com","RV Parks","2026-04-28","Sent","Sent:2026-04-28 · DELAY (still retrying)"],
+  ["19dd43057bd1b76d","Benvenuto Restaurant","info@benvenutorestaurant.com","Restaurants","2026-04-28","Sent","Sent:2026-04-28"],
+  ["19dd43036865d6e1","Extra Space Storage Boca Raton","fac0243@extraspace.com","Self-Storage Facilities","2026-04-28","Sent","Sent:2026-04-28"],
+  ["19dd4303c0f3d2da","Sentry Self Storage Boca Raton","bocaraton@sentrystoragefl.com","Self-Storage Facilities","2026-04-28","Bounced","Sent:2026-04-28 · BOUNCED"],
+  ["19ddf3f3cb9e724c","Associated Property Management (APM)","admin1@apm247.net","Apartment Buildings / HOA-governed properties","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ebe46bb829","Florida's Property Management","leasing@floridaspropertymanagement.com","Apartment Buildings / HOA-governed properties","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ebf3ad55ba","Home Property Management II","broker@624home.com","Apartment Buildings / HOA-governed properties","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ecc5c6f355","PME Florida (Property Maintenance Experts)","info@pmeflorida.com","Apartment Buildings / HOA-governed properties","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ec4d88c2c2","Ariana Garden Banquet Hall","info@arianagardenbanquethallfl.com","Banquet / Event Venues","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ec5668ff8d","Bella Banquet Hall WPB","bellabanquetwpb@gmail.com","Banquet / Event Venues","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ef21113a71","Palm Beach Banquets","events@palmbeachbanquets.com","Banquet / Event Venues","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ef5d2cf65f","Certified Collision Shop","estimates@certifiedcollisionshop.com","Body Shops","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ec945e4bb7","Advent Lutheran Church","office@advent-lutheran.org","Churches","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf39098cb8c4d","Christ Community Church (CCCOG)","reception@cccog.com","Churches","2026-04-30","Replied","Sent:2026-04-30 · REPLY (2026-04-30): Danielle Kays"],
+  ["19ddf390cedca4e6","Church of the Messiah","office@churchofthemessiah.com","Churches","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ef87d6f53d","First Presbyterian Church of Boynton Beach","fpcboynton@aol.com","Churches","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ebeda56b37","Grace Haven Church","hello@gracehavenchurch.org","Churches","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf390da702b3d","Hosanna Lutheran Church","admin.assistant@hosannalutheran.org","Churches","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf390661d8807","Lakeside Presbyterian Church","office@lakesidepc.org","Churches","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f37e5fb130","Trinity Christian School Palm Beach Gardens","tcsinfo@tcspbg.org","Churches","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3efbc26e32b","United Methodist Church of the Palm Beaches","churchadministrator@umcpb.org","Churches","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ebeb039463","Westgate Church","info@westgatechurch.org","Churches","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f023d15d2e","Century Village Theater - West Palm Beach","ticketoffice.wpb@cenrec.com","Cinemas","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f95ed1e96a","Countryside Property Maintenance","prohrer@altavistasp.com","Commercial / Retail","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f067e7f5f7","Plaza Del Mar Shopping","info@plazadelmarshopping.com","Commercial / Retail","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f24ac66a15","Boca Dental","info@bocadental.com","Dental Practices","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ec9b05af7b","Delta Pediatric Dentistry","info@deltapediatricdentistry.com","Dental Practices","2026-04-30","Bounced","Sent:2026-04-30 · BOUNCED"],
+  ["19ddf3f2a371df31","Dental Care of Boca Raton","appointment@bocasmiles.com","Dental Practices","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f269c4d94a","East Boca Dental","george@eastbocadental.com","Dental Practices","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f26eac9f3e","Manreet K. Singh DMD - Boca Raton Dental Care","drsinghdmdboca@gmail.com","Dental Practices","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f319cf2b4c","Body & Core Pilates","info@bodycorepilates.com","Fitness Centers / Gyms","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f04984ea82","Level X Fitness","rcarroll214@yahoo.com","Fitness Centers / Gyms","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f315021812","Sunset Pilates","greetings@sunsetpilates.com","Fitness Centers / Gyms","2026-04-30","Bounced","Sent:2026-04-30 · BOUNCED"],
+  ["19ddf3f15043bf07","Madison Green Country Club","banquet@madisongreencountryclub.com","Golf Courses","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f40d334d32","Wellington National Golf Club","info@wellingtonnationalgolf.com","Golf Courses","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f1db517090","Wycliffe Golf & Country Club","info@wycliffecc.com","Golf Courses","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f1f50db8df","Boca Laundry and Cleaners","bocalaundry1@gmail.com","Laundromats","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f204d2649c","Cresthaven Coin Laundry","will@lowlaundry.com","Laundromats","2026-04-30","Bounced","Sent:2026-04-30 · BOUNCED"],
+  ["19ddf3ec444de8cf","Express Laundry","doubledowncoinlaundry@gmail.com","Laundromats","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ec5af3d090","Garden Park Plaza Laundry","gardenparklaundry@yahoo.com","Laundromats","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ec9c8a713c","Delray Beach Chiropractor","sflchiropractic4600@gmail.com","Medical Offices","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ed677f03f5","Pet Medical Center of Boca Raton","info@petmedicalcenterboca.com","Medical Offices","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f40f026116","7th Nail Parlor","7thnailparlor@gmail.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ef0ca48685","Absolute Beer","contact@absolutebeer.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f33fa8b572","AcuSports Therapy","holly@acusportstherapy.net","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f108b0487a","All Dogs Rock","info@alldogsrock.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ee5bdfb580","Amrit Ocean Resort","info@amritocean.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ec3b600007","CocoPlum Coastal Care","info@cocoplum.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ecb5d2b44f","D&A Building Services","info@dabuildingservices.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f1ee052322","Dry Clean Express of Boca","hello@drycleanexpressofboca.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ec55938645","Early Learning Coalition of Palm Beach County","communications@elcpalmbeach.org","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ee30cc05cc","Furry Friends Adoption, Clinic & Ranch","info@ffhumane.org","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3eea7a183b5","Gulfstream Manor","gulfstreammanor@worldnet.att.net","Other","2026-04-30","Bounced","Sent:2026-04-30 · BOUNCED"],
+  ["19ddf3ee6e8fa21d","Hampton Inn West Palm Beach-Lake Worth-Turnpike","bctfl_hampton@hilton.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ee9e0082a8","Holiday Inn Boca Raton","dos.hiboca@leximalodging.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ef6d069326","Hollywood Institute - West Palm Beach","info@hi.edu","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ec38f506da","Kids R Kids Palm Beach Gardens","info@kidsrkidswoodsons.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ebe85fc2d4","PMI Palm Vista","nate@pmipalmvista.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f2b4f1c825","Palm Beach Historic Inn","info@palmbeachhistoricinn.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ef6bc47c04","Palm Beach Toyota","webleads@palmbeachtoyota.dsmessage.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ed2698904b","Palm Coast Pet Clinic","pcpetclinic@gmail.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ebf481ff0e","Park Pointe Apartments","service@parkpointe.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3eca8bf1bed","ProFi Construction & Maintenance","info@profifm.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f074b45ac4","Promenade Shopping Plaza (JLL)","cammi.goldberg@am.jll.com","Other","2026-04-30","Bounced","Sent:2026-04-30 · BOUNCED"],
+  ["19ddf3f027a91439","RPB Fit Factory","info@rpbfitfactory.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f3f83f6e2e","RealManage Palm Beach Gardens","info@realmanage.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ee9986ca3e","Sunny Palms Inn","sunnypalmslakeworth@gmail.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ebe18cf499","The Seagate Hotel & Spa","info@seagatedelray.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f168fc645a","The Wanderers Club","info@wanderersclub.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3900a863323","Vets to Pets LLC","drzafir@vetstopets.net","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ef1b6c36fd","Zoo Health Club Boynton Beach","support@zoogym.com","Other","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3efa83d0bbb","Atlantic Christian Academy","info@atlanticca.com","Private Schools & Daycares","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f34ef4f409","Berean Christian School","info@bereanwpb.org","Private Schools & Daycares","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ec20a7baf9","Donna Klein Jewish Academy","info@donnaklein.com","Private Schools & Daycares","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f2dbae6202","Get Ready Set Grow Academy","receptionist@getreadysetgrow.com","Private Schools & Daycares","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f3bbfb2057","Gulf Stream School","mmahady@gulfstreamschool.org","Private Schools & Daycares","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf39073bec1dd","Lakeside Presbyterian Preschool","preschool@lakesidepc.org","Private Schools & Daycares","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f3876d45a6","Palm Beach Prep School","info@palmbeachprep.org","Private Schools & Daycares","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f033e6dd5d","Palm Beach Preparatory Charter Academy","mgarcia@pbpca.com","Private Schools & Daycares","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3efebb5ee77","Score Academy Palm Beach Gardens","pbg@score-academy.com","Private Schools & Daycares","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ec96673e64","LocalStorage Palm Beach Gardens","customerservice@thelocalstoragegroup.com","Self-Storage Facilities","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f156212b7e","Mini U Storage Boynton Beach","boyntonbeach@miniustorage.com","Self-Storage Facilities","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f1049b4e98","Animal Clinic at Wellington Reserve","mywellingtonvet@icloud.com","Veterinary Clinics","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf38fe2403762","Boca Delray Animal Hospital","care@bocadelrayah.com","Veterinary Clinics","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ee36a92130","Calusa Veterinary Center","customerservice@cvcboca.com","Veterinary Clinics","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ed8bc8184f","Cole Animal Clinic","coleanimalclinic@gmail.com","Veterinary Clinics","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ed9fa5b306","Garden Park Animal Clinic","thenewgardenparkac@gmail.com","Veterinary Clinics","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ed54f8f830","Island Animal Hospital - Palm Beach","info@islandanimalhospital.com","Veterinary Clinics","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f0b79af026","Jupiter Veterinary Hospital","info@jupiterveterinaryhospital.com","Veterinary Clinics","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ed789ddfe1","Justin Bartlett Animal Hospital","info@justinbartlettanimalrescue.org","Veterinary Clinics","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f134189858","Loving Paws Boarding","info@lovingpawsboarding.com","Veterinary Clinics","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3907f3f0ba3","Paws2Help - Jupiter","jupiter.reception@paws2help.org","Veterinary Clinics","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf38fe6aee04a","Paws2Help - West Palm Beach","paws.reception@paws2help.org","Veterinary Clinics","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf38ff6a274c7","Pet Calls Animal Hospital","petcallsreception@gmail.com","Veterinary Clinics","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3edae0c8b3c","Promenade Animal Hospital","promenadevet@att.net","Veterinary Clinics","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f11b11c544","West Ave Animal Hospital","mobilevet2u@gmail.com","Veterinary Clinics","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3f4295238b9","NOBO Brewing Company","info@nobobrewing.com","Wineries & Breweries","2026-04-30","Sent","Sent:2026-04-30"],
+  ["19ddf3ebf260d29c","Saltwater Brewery","manager@saltwaterbrewery.com","Wineries & Breweries","2026-04-30","Sent","Sent:2026-04-30"]
 ];
 
 const SEED = {
   campaigns: [
-    {id:"c1", name:"Apr 21 Outreach — Churches, Vets, Funerals, Golf, Marinas", segment:"Mixed", status:"Active", launch:"2026-04-21", target:102, subject:"Quick question about [Company]'s building exterior", notes:"102 sent 4/21. Palm Beach County, heavy Catholic parishes, vet clinics, golf, funeral homes, marinas, breweries."},
-    {id:"c2", name:"Apr 22 Outreach — Dental, HOA, Fitness, Dealers, Restaurants", segment:"Mixed", status:"Active", launch:"2026-04-22", target:80, subject:"Quick question about [Company]'s building exterior", notes:"80 sent 4/22 in two batches. Verticals: dental, HOA, medical, fitness, restaurants, auto dealers, car washes."},
+    {id:"c1", name:"Apr 21 Outreach — Churches, Vets, Funerals, Golf, Marinas", segment:"Mixed", status:"Active", launch:"2026-04-21", target:102, subject:"Quick question about [Company]'s building exterior", notes:"102 sent 4/21 from asappressurecleaning@gmail.com."},
+    {id:"c2", name:"Apr 22 Outreach — Dental, HOA, Fitness, Dealers, Restaurants", segment:"Mixed", status:"Active", launch:"2026-04-22", target:80, subject:"Quick question about [Company]'s building exterior", notes:"80 sent 4/22 in two batches."},
     {id:"c3", name:"Apr 23 Outreach — Mixed Verticals", segment:"Mixed", status:"Active", launch:"2026-04-23", target:15, subject:"Quick question about [Company]'s building exterior", notes:"15 sent 4/23. Churches, dental, fitness, hotels, vet, schools."},
-    {id:"c4", name:"Apr 24 Outreach — Property Mgmt, Animal Hospitals, Schools, Hotels", segment:"Mixed", status:"Active", launch:"2026-04-24", target:30, subject:"Quick question about [Company]'s exterior", notes:"30 sent 4/24. NEW SUBJECT TEMPLATE (no 'building'). NEW BODY by Anat Leon."},
-    {id:"c5", name:"Apr 27 Outreach — Vets, Fitness, Hotels, Churches, Dental", segment:"Mixed", status:"Active", launch:"2026-04-27", target:54, subject:"Quick question about [Company]'s building exterior", notes:"54 sent 4/27 (largest batch since 4/21). Heavy vets, fitness/pilates, hotels, dental, plus martial arts and synagogue."}
+    {id:"c4", name:"Apr 24 Outreach — Property Mgmt, Animal Hospitals, Schools", segment:"Mixed", status:"Active", launch:"2026-04-24", target:30, subject:"Quick question about [Company]'s exterior", notes:"30 sent 4/24. New 'driving past' template by Anat Leon."},
+    {id:"c5", name:"Apr 27 Outreach — Vets, Fitness, Hotels, Churches", segment:"Mixed", status:"Active", launch:"2026-04-27", target:54, subject:"Quick question about [Company]'s building exterior", notes:"54 sent 4/27. Heavy vets, fitness/pilates, hotels, dental."},
+    {id:"c6", name:"Apr 28 Outreach — Schools, Hotels, Universities, Auto", segment:"Mixed", status:"Active", launch:"2026-04-28", target:35, subject:"Quick question about [Company]'s building exterior", notes:"35 sent 4/28. High-school district, universities, hotels, auto. 12 hard-bounced — many addresses synthetic/bad."},
+    {id:"c7", name:"Apr 30 Outreach — Property Mgmt, Vets, Churches, Schools", segment:"Mixed", status:"Active", launch:"2026-04-30", target:94, subject:"Quick question about [Company]'s building exterior", notes:"94 sent 4/30 (largest batch yet). NEW from-address: info@asappressureclean.com (was @gmail.com). Property mgmt focus, vets, churches, schools, hotels."}
   ],
   leads: _RAW_LEADS.map(([id, company, email, segment, batch, stage, notes]) => {
-    const campMap = {"2026-04-21":"c1","2026-04-22":"c2","2026-04-23":"c3","2026-04-24":"c4","2026-04-27":"c5"};
-    const campaign = campMap[batch] || "c5";
+    const campMap = {"2026-04-21":"c1","2026-04-22":"c2","2026-04-23":"c3","2026-04-24":"c4","2026-04-27":"c5","2026-04-28":"c6","2026-04-30":"c7"};
+    const campaign = campMap[batch] || "c7";
     const last = batch;
     const nextDate = (() => {
       const d = new Date(batch);
@@ -591,9 +722,12 @@ const SEED = {
     c2:{ sent:80,  opens:2, replies:1, meetings:0, bounced:11 },
     c3:{ sent:15,  opens:0, replies:0, meetings:0, bounced:0 },
     c4:{ sent:30,  opens:1, replies:0, meetings:0, bounced:3 },
-    c5:{ sent:54,  opens:0, replies:0, meetings:0, bounced:1 }
+    c5:{ sent:54,  opens:0, replies:0, meetings:0, bounced:1 },
+    c6:{ sent:35,  opens:0, replies:0, meetings:0, bounced:12 },
+    c7:{ sent:94,  opens:0, replies:1, meetings:0, bounced:5 }
   }
 };
+
 
 
 
